@@ -1,0 +1,17 @@
+name: asic
+channels:
+  - defaults
+dependencies:
+  - jinja2
+  - pytest
+  - matplotlib
+  - yapf
+  - sympy
+  - jsonschema
+  - numpy
+  - scipy
+  - doit
+  - mypy
+  - pyyaml
+  - pyvisa
+  - pyvisa-py

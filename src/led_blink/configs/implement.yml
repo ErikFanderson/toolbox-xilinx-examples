@@ -1,0 +1,51 @@
+# Set target part for vivado (using vc707 evaluation board)
+vivado.part: "xc7vx485tffg1761-2"
+vivado.execute: true 
+
+# Set the units for all variable
+vivado.units.time: "ns"
+vivado.units.capacitance: "pF"
+vivado.units.current: "mA"
+vivado.units.voltage: "V"
+vivado.units.power: "mW"
+vivado.units.resistance: "ohm"
+vivado.units.altitude: "meters"
+
+# Set top level module
+vivado.top: "blink"
+
+# Files
+vivado.verilog:
+- "src/blink.v"
+vivado.vhdl: []
+vivado.xdc: []
+#- "src/clocks.xdc"
+#- "src/pblocks.xdc"
+#- "src/pins.xdc"
+
+vivado.config:
+  mode: "B_SCAN"
+  bank_voltage_select: "GND"
+  voltage: 1.8 
+
+vivado.clocks:
+- name: "clk"
+  period: 6.4
+
+vivado.ports:
+- name: "led"
+  package_pin: "AM39" # GPIO_LED_0
+  iostandard: "LVCMOS18"
+- name: "clk_p"
+  package_pin: "AK34" # USER_CLOCK_P
+  iostandard: "LVDS"
+- name: "clk_n"
+  package_pin: "AL34" # USER_CLOCK_N
+  iostandard: "LVDS"
+
+upload.bitstream: "build/implement/current/blink.bit"
+upload.hw_server.hostname: "localhost"
+upload.hw_server.port: 3121
+upload.target: "*xilinx_tcf/Digilent/210203A03554A" 
+upload.execute: true
+upload.query_targets: false 

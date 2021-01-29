@@ -1,0 +1,43 @@
+#------------------------------------------------------------------------------
+# Author: Erik Anderson
+# Email: erik.francis.anderson@gmail.com
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# List of directories containing tools
+#------------------------------------------------------------------------------
+tools:
+- "${internal.env.TOOLBOX_HOME}/toolbox/tools/jinja_tool/jinja_tool"
+- "${internal.env.PROJECT_HOME}/toolbox-buildfile-tools/make/make"
+- "${internal.env.PROJECT_HOME}/toolbox-xilinx-tools/toolbox-xilinx-tools/2020.2/implement/implement"
+- "${internal.env.PROJECT_HOME}/toolbox-xilinx-tools/toolbox-xilinx-tools/2020.2/upload/upload"
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# List of jobs
+#------------------------------------------------------------------------------
+jobs.build.tasks: [{tool: Make}]
+jobs.build.description: "Generates a Makefile w/ all jobs as targets"
+
+jobs.implement.tasks: [{tool: XilinxImplementTool, additional_configs: [configs/implement.yml]}]
+jobs.implement.description: "Implement design and generate bitstream for FPGA"
+
+jobs.upload.tasks: [{tool: XilinxUploadTool, additional_configs: [configs/implement.yml]}]
+jobs.upload.description: "Implement design and generate bitstream for FPGA"
+  
+make.targets:
+- name: clean
+  description: "Cleans directory"
+  outputs: []
+  dependencies: []
+  commands: ["rm -rf build *.jou *.log"]
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# List of files and directories
+#------------------------------------------------------------------------------
+#files.example_file_0: "/path/to/example/file_0"
+#dirs.example_dir_0: "/path/to/example/dir_0/"
+#filelists.example_filelist_0: []
+#dirlists.example_dirlist_0: []
+#------------------------------------------------------------------------------
