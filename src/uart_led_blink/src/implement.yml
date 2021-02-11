@@ -1,0 +1,91 @@
+# Set target part for vivado (using vc707 evaluation board)
+vivado.part: "xc7vx485tffg1761-2"
+vivado.execute: true 
+
+# Set the units for all variable
+vivado.units.time: "ns"
+vivado.units.capacitance: "pF"
+vivado.units.current: "mA"
+vivado.units.voltage: "V"
+vivado.units.power: "mW"
+vivado.units.resistance: "ohm"
+vivado.units.altitude: "meters"
+
+# Set top level module
+vivado.top: "uart_blink"
+
+# Files
+vivado.verilog:
+- "src/uart_blink.v"
+- "${internal.env.PROJECT_HOME}/verilog-library/src/uart/uart.v"
+vivado.vhdl: []
+vivado.xdc: []
+#- "src/clocks.xdc"
+#- "src/pblocks.xdc"
+#- "src/pins.xdc"
+
+# Set configuration method for uploading bitstream
+vivado.config:
+  mode: "B_SCAN"
+  bank_voltage_select: "GND"
+  voltage: 1.8
+
+vivado.clocks:
+- name: "i_clk_p"
+  type: "port"
+  period: 6.4
+- name: "i_clk_n"
+  type: "port"
+  period: 6.4
+- name: "IBUFGDS_inst/O"
+  type: "pin"
+  period: 6.4
+
+vivado.ports:
+- name: "i_clk_p"
+  package_pin: "AK34" # USER_CLOCK_P
+  iostandard: "LVDS"
+- name: "i_clk_n"
+  package_pin: "AL34" # USER_CLOCK_N
+  iostandard: "LVDS"
+- name: "i_rst"
+  package_pin: "AV39" # GPIO_SW_C 
+  iostandard: "LVCMOS18"
+- name: "o_led[0]"
+  package_pin: "AM39" # GPIO_LED_0
+  iostandard: "LVCMOS18"
+- name: "o_led[1]"
+  package_pin: "AN39" # GPIO_LED_1
+  iostandard: "LVCMOS18"
+- name: "o_led[2]"
+  package_pin: "AR37" # GPIO_LED_2
+  iostandard: "LVCMOS18"
+- name: "o_led[3]"
+  package_pin: "AT37" # GPIO_LED_3
+  iostandard: "LVCMOS18"
+- name: "o_led[4]"
+  package_pin: "AR35" # GPIO_LED_4
+  iostandard: "LVCMOS18"
+- name: "o_led[5]"
+  package_pin: "AP41" # GPIO_LED_5
+  iostandard: "LVCMOS18"
+- name: "o_led[6]"
+  package_pin: "AP42" # GPIO_LED_6
+  iostandard: "LVCMOS18"
+- name: "o_led[7]"
+  package_pin: "AU39" # GPIO_LED_7
+  iostandard: "LVCMOS18"
+- name: "o_uart_tx"
+  package_pin: "AU36" # USB_RX (i.e. UART_TX)
+  iostandard: "LVCMOS18"
+- name: "i_uart_rx"
+  package_pin: "AU33" # USB_TX (i.e. UART_RX)
+  iostandard: "LVCMOS18"
+
+# Information for connecting to hardware server and uploading to target
+upload.bitstream: "build/implement/current/uart_blink.bit"
+upload.hw_server.hostname: "localhost"
+upload.hw_server.port: 3121
+upload.target: "*xilinx_tcf/Digilent/210203A03554A"
+upload.execute: true
+upload.query_targets: false

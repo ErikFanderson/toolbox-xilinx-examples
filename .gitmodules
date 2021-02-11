@@ -7,3 +7,6 @@
 [submodule "toolbox-xilinx-tools"]
 	path = toolbox-xilinx-tools
 	url = git@github.com:ErikFanderson/toolbox-xilinx-tools.git
+[submodule "verilog-library"]
+	path = verilog-library
+	url = git@github.com:ErikFanderson/verilog-library.git

@@ -19,10 +19,10 @@ tools:
 jobs.build.tasks: [{tool: Make}]
 jobs.build.description: "Generates a Makefile w/ all jobs as targets"
 
-jobs.implement.tasks: [{tool: XilinxImplementTool, additional_configs: [configs/implement.yml]}]
+jobs.implement.tasks: [{tool: XilinxImplementTool, additional_configs: [src/implement.yml]}]
 jobs.implement.description: "Implement design and generate bitstream for FPGA"
 
-jobs.upload.tasks: [{tool: XilinxUploadTool, additional_configs: [configs/implement.yml]}]
+jobs.upload.tasks: [{tool: XilinxUploadTool, additional_configs: [src/implement.yml]}]
 jobs.upload.description: "Implement design and generate bitstream for FPGA"
   
 make.targets:
