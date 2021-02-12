@@ -16,14 +16,16 @@ module uart_blink (
     i_rst, 
     o_led, 
     o_uart_tx, 
-    i_uart_rx
+    i_uart_rx,
+    o_uart_rts_n,
+    i_uart_cts_n
 );
 
 //-----------------------------------------------------------------------------------
 // Parameters 
 //-----------------------------------------------------------------------------------
 parameter BaudRate = 9600;
-parameter SystemClockFrequency = 100000000;
+parameter SystemClockFrequency = 156250000;
 //-----------------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------------
@@ -35,6 +37,8 @@ input wire i_rst;
 output reg [7:0] o_led;
 output wire o_uart_tx;
 input wire i_uart_rx;
+output wire o_uart_rts_n; // Request to send (set this to high if ready to accept data)
+input wire i_uart_cts_n; // Clear to send (if high then it is okay to send data)
 //-----------------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------------
@@ -46,6 +50,9 @@ wire [7:0] tx_byte, rx_byte;
 wire is_receiving, is_transmitting;
 wire recv_error;
 //-----------------------------------------------------------------------------------
+
+// Set high so PC can always send data 
+assign o_uart_rts_n = 1'b0;
 
 //-----------------------------------------------------------------------------------
 // Diff to single ended clock conversion (FPGA dependent) 

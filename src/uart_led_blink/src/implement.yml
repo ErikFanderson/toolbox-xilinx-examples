@@ -81,6 +81,12 @@ vivado.ports:
 - name: "i_uart_rx"
   package_pin: "AU33" # USB_TX (i.e. UART_RX)
   iostandard: "LVCMOS18"
+- name: "o_uart_rts_n"
+  package_pin: "AR34" # USB_CTS (i.e. UART_RTS)
+  iostandard: "LVCMOS18"
+- name: "i_uart_cts_n"
+  package_pin: "AT32" # USB_RTS (i.e. UART_CTS)
+  iostandard: "LVCMOS18"
 
 # Information for connecting to hardware server and uploading to target
 upload.bitstream: "build/implement/current/uart_blink.bit"
