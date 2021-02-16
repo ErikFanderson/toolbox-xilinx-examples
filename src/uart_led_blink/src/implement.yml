@@ -1,36 +1,36 @@
 # Set target part for vivado (using vc707 evaluation board)
-vivado.part: "xc7vx485tffg1761-2"
-vivado.execute: true 
+implement.part: "xc7vx485tffg1761-2"
+implement.execute: true 
 
 # Set the units for all variable
-vivado.units.time: "ns"
-vivado.units.capacitance: "pF"
-vivado.units.current: "mA"
-vivado.units.voltage: "V"
-vivado.units.power: "mW"
-vivado.units.resistance: "ohm"
-vivado.units.altitude: "meters"
+implement.units.time: "ns"
+implement.units.capacitance: "pF"
+implement.units.current: "mA"
+implement.units.voltage: "V"
+implement.units.power: "mW"
+implement.units.resistance: "ohm"
+implement.units.altitude: "meters"
 
 # Set top level module
-vivado.top: "uart_blink"
+implement.top: "uart_blink"
 
 # Files
-vivado.verilog:
+implement.verilog:
 - "src/uart_blink.v"
 - "${internal.env.PROJECT_HOME}/verilog-library/src/uart/uart.v"
-vivado.vhdl: []
-vivado.xdc: []
+implement.vhdl: []
+implement.xdc: []
 #- "src/clocks.xdc"
 #- "src/pblocks.xdc"
 #- "src/pins.xdc"
 
 # Set configuration method for uploading bitstream
-vivado.config:
+implement.config:
   mode: "B_SCAN"
   bank_voltage_select: "GND"
   voltage: 1.8
 
-vivado.clocks:
+implement.clocks:
 - name: "i_clk_p"
   type: "port"
   period: 6.4
@@ -41,7 +41,7 @@ vivado.clocks:
   type: "pin"
   period: 6.4
 
-vivado.ports:
+implement.ports:
 - name: "i_clk_p"
   package_pin: "AK34" # USER_CLOCK_P
   iostandard: "LVDS"
