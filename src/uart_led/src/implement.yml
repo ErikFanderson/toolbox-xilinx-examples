@@ -16,12 +16,14 @@ implement.top: "uart_led_top"
 
 # Files
 implement.verilog:
-- "src/uart_led_defines.v"
+- "${internal.env.PROJECT_HOME}/verilog-library/src/fpga/uart_led/uart_led_defines.v"
 - "src/uart_led_top.v"
-- "src/uart_led.v"
-- "src/uart_led_mem_map.v"
 - "${internal.env.PROJECT_HOME}/verilog-library/src/uart/uart.v"
+- "${internal.env.PROJECT_HOME}/verilog-library/src/uart/uart_tx.v"
+- "${internal.env.PROJECT_HOME}/verilog-library/src/uart/uart_rx.v"
 - "${internal.env.PROJECT_HOME}/verilog-library/src/uart/uart_mem_access.v"
+- "${internal.env.PROJECT_HOME}/verilog-library/src/fpga/uart_led/uart_led.v"
+- "${internal.env.PROJECT_HOME}/verilog-library/src/fpga/uart_led/uart_led_mem_map.v"
 implement.vhdl: []
 implement.xdc: []
 #- "src/clocks.xdc"
