@@ -12,12 +12,16 @@ implement.units.resistance: "ohm"
 implement.units.altitude: "meters"
 
 # Set top level module
-implement.top: "uart_blink"
+implement.top: "uart_led_top"
 
 # Files
 implement.verilog:
-- "src/uart_blink.v"
+- "src/uart_led_defines.v"
+- "src/uart_led_top.v"
+- "src/uart_led.v"
+- "src/uart_led_mem_map.v"
 - "${internal.env.PROJECT_HOME}/verilog-library/src/uart/uart.v"
+- "${internal.env.PROJECT_HOME}/verilog-library/src/uart/uart_mem_access.v"
 implement.vhdl: []
 implement.xdc: []
 #- "src/clocks.xdc"
@@ -30,16 +34,26 @@ implement.config:
   bank_voltage_select: "GND"
   voltage: 1.8
 
-implement.clocks:
+implement.primary_clocks:
 - name: "i_clk_p"
+  object: "i_clk_p"
   type: "port"
   period: 6.4
 - name: "i_clk_n"
+  object: "i_clk_n"
   type: "port"
   period: 6.4
-- name: "IBUFGDS_inst/O"
+
+implement.generated_clocks:
+- name: "buffered_clock"
+  object: "IBUFGDS_inst/O"
   type: "pin"
-  period: 6.4
+  source: "i_clk_p"
+  source_type: "port"
+  divisor: 1
+
+#implement.input_delay_constraints:
+#implement.output_delay_constraints:
 
 implement.ports:
 - name: "i_clk_p"
@@ -89,7 +103,7 @@ implement.ports:
   iostandard: "LVCMOS18"
 
 # Information for connecting to hardware server and uploading to target
-upload.bitstream: "build/implement/current/uart_blink.bit"
+upload.bitstream: "build/implement/current/uart_led_top.bit"
 upload.hw_server.hostname: "localhost"
 upload.hw_server.port: 3121
 upload.target: "*xilinx_tcf/Digilent/210203A03554A"
