@@ -39,9 +39,9 @@ class UARTDriver():
         #data = data.to_bytes(1, "big")
         #print([address, data])
         #self.ser.write([address, data])
-        #print(bytes([address, data]))
+        print(bytes([address, data]))
         num_bytes = self.ser.write(bytes([address, data]))
-        #print(f"Num bytes written: {num_bytes}")
+        print(f"Num bytes written: {num_bytes}")
     
     def read_byte(self, address: int) -> int:
         self.ser.write((address + 128).to_bytes(1, "big"))
@@ -59,37 +59,20 @@ if __name__ == '__main__':
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE)
     
-    #drv.ser.write(bytes([0x0]))
-    #drv.ser.write(bytes([0x55]))
-    for i in range(50):
-        drv.ser.write(bytes([i]))
+    for i in range(100):
+        num_bytes = drv.ser.write(bytes([0x55]))
+        read_data = int.from_bytes(drv.ser.read(), "big")
+        print(f"Write data: 0x55")
+        print(f"Read data: {hex(read_data)}\n")
+        #time.sleep(0.5)
         time.sleep(2)
-    
-    #drv.write_byte(0, 0x55)
-    #print(drv.read_byte(0))
-    
-    #print(drv.write_byte(0, 0x55))
-    #time.sleep(1)
-    #drv.write_byte(0, 0xaa)
 
-    
-    #drv.ser.write(bytes([128]))
-    #print(int(drv.ser.read()))
-    #drv.open()
-    #drv.write_byte(0, 0)
-    #time.sleep(1)
-    #print(hex(99))
-    #drv.write_byte(0, 99)
-    #for i in range(100):
-    #    drv.write_byte(0, i)
-    #    time.sleep(1)
-    #drv.ser.write(bytes([0, 0x10]))
-    
-    ## Write something
-    #drv.ser.write(bytes([0]))
-    #print("Address byte written")
-    #drv.ser.write(bytes([0x55]))
-    #print("Data byte written")
-    #drv.write_byte(0, 0x55)
+    #for i in range(40, 100):    
+    #    num_bytes = drv.ser.write(bytes([i]))
+    #    read_data = int.from_bytes(drv.ser.read(), "big")
+    #    print(f"Write data: {i}")
+    #    print(f"Read data: {read_data}\n")
+    #    #time.sleep(0.5)
+    #    time.sleep(2)
     
     drv.close()

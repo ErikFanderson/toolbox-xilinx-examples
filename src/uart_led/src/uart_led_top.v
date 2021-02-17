@@ -67,22 +67,55 @@ IBUFGDS #(
 //-----------------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------------
-// Simple UART 
+// Simple UART to led test 
 //-----------------------------------------------------------------------------------
-uart_led #(
+wire rx_valid;
+wire [7:0] rx_data;
+
+uart #(
     .BaudRate(BaudRate),
     .SystemClockFrequency(SystemClockFrequency)
-) uart_led_inst (
+) uart_inst (
     .i_clk(clk),
     .i_rst(i_rst),
-    .o_uart_tx(o_uart_tx),
-    .i_uart_rx(i_uart_rx),
-    .o_uart_rts_n(o_uart_rts_n),
-    .i_uart_cts_n(i_uart_cts_n),
-    .o_uart_rx_error(), // unused
-    .o_mem_leds(o_led),
-    .o_mem_reset(uart_mm_rst)
+    
+    .o_tx(o_uart_tx),
+    .i_rx(i_uart_rx),
+    .o_rts_n(o_uart_rts_n),
+    .i_cts_n(i_uart_cts_n),
+    
+    .o_tx_ready(),
+    .i_tx_valid(1'b0),
+    .i_tx_data(8'h55),
+    
+    .i_rx_ready(1'b1),
+    .o_rx_valid(rx_valid),
+    .o_rx_data(rx_data)
 );
+
+always @(*) begin
+    if (i_rst) o_led <= 8'd0;
+    else if (rx_valid) o_led <= rx_data;
+end
+//-----------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------
+// UART LED Mem mapped
+//-----------------------------------------------------------------------------------
+//uart_led #(
+//    .BaudRate(BaudRate),
+//    .SystemClockFrequency(SystemClockFrequency)
+//) uart_led_inst (
+//    .i_clk(clk),
+//    .i_rst(i_rst),
+//    .o_uart_tx(o_uart_tx),
+//    .i_uart_rx(i_uart_rx),
+//    .o_uart_rts_n(o_uart_rts_n),
+//    .i_uart_cts_n(i_uart_cts_n),
+//    .o_uart_rx_error(), // unused
+//    .o_mem_leds(o_led),
+//    .o_mem_reset(uart_mm_rst)
+//);
 //-----------------------------------------------------------------------------------
 
 ////-----------------------------------------------------------------------------------

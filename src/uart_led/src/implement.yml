@@ -109,5 +109,6 @@ upload.bitstream: "build/implement/current/uart_led_top.bit"
 upload.hw_server.hostname: "localhost"
 upload.hw_server.port: 3121
 upload.target: "*xilinx_tcf/Digilent/210203A03554A"
+#upload.target: "*xilinx_tcf/Digilent/210203A023BEA"
 upload.execute: true
 upload.query_targets: false

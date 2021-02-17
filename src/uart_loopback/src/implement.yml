@@ -1,0 +1,77 @@
+# Set target part for vivado (using vc707 evaluation board)
+implement.part: "xc7vx485tffg1761-2"
+implement.execute: true 
+
+# Set the units for all variable
+implement.units.time: "ns"
+implement.units.capacitance: "pF"
+implement.units.current: "mA"
+implement.units.voltage: "V"
+implement.units.power: "mW"
+implement.units.resistance: "ohm"
+implement.units.altitude: "meters"
+
+# Set top level module
+implement.top: "uart_loopback"
+
+# Files
+implement.verilog:
+- "src/uart_loopback.v"
+implement.vhdl: []
+implement.xdc: []
+#- "src/clocks.xdc"
+#- "src/pblocks.xdc"
+#- "src/pins.xdc"
+
+# Set configuration method for uploading bitstream
+implement.config:
+  mode: "B_SCAN"
+  bank_voltage_select: "GND"
+  voltage: 1.8
+
+#implement.primary_clocks:
+#- name: "i_clk_p"
+#  object: "i_clk_p"
+#  type: "port"
+#  period: 6.4
+#- name: "i_clk_n"
+#  object: "i_clk_n"
+#  type: "port"
+#  period: 6.4
+#
+#implement.generated_clocks:
+#- name: "buffered_clock"
+#  object: "IBUFGDS_inst/O"
+#  type: "pin"
+#  source: "i_clk_p"
+#  source_type: "port"
+#  divisor: 1
+
+#implement.input_delay_constraints:
+#implement.output_delay_constraints:
+
+implement.ports:
+- name: "o_uart_tx"
+  package_pin: "AU36" # USB_RX (i.e. UART_TX)
+  iostandard: "LVCMOS18"
+- name: "i_uart_rx"
+  package_pin: "AU33" # USB_TX (i.e. UART_RX)
+  iostandard: "LVCMOS18"
+- name: "o_uart_rts_n"
+  package_pin: "AR34" # USB_CTS (i.e. UART_RTS)
+  iostandard: "LVCMOS18"
+- name: "i_uart_cts_n"
+  package_pin: "AT32" # USB_RTS (i.e. UART_CTS)
+  iostandard: "LVCMOS18"
+- name: "o_fmc_uart_test"
+  package_pin: "K39" # FMC G6 (FMC debug card J1 pin 1)
+  iostandard: "LVCMOS18"
+
+# Information for connecting to hardware server and uploading to target
+upload.bitstream: "build/implement/current/uart_loopback.bit"
+upload.hw_server.hostname: "localhost"
+upload.hw_server.port: 3121
+upload.target: "*xilinx_tcf/Digilent/210203A03554A"
+#upload.target: "*xilinx_tcf/Digilent/210203A023BEA"
+upload.execute: true
+upload.query_targets: false 
