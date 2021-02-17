@@ -23,10 +23,18 @@ upload:
 #----------------------------------------------------------
 
 #----------------------------------------------------------
+# Target "sim_rtl" 
+#----------------------------------------------------------
+sim_rtl: 
+	toolbox-cli --color -l info -b build -o toolbox sim_rtl	
+.PHONY: sim_rtl
+#----------------------------------------------------------
+
+#----------------------------------------------------------
 # Target "clean" 
 #----------------------------------------------------------
 clean: 
-	rm -rf build *.jou *.log	
+	rm -rf build *.jou *.log *.pb	
 .PHONY: clean
 #----------------------------------------------------------
 
@@ -40,6 +48,7 @@ list:
 	@echo "build        Generates a Makefile w/ all jobs as targets"
 	@echo "implement    Implement design and generate bitstream for FPGA"
 	@echo "upload       Implement design and generate bitstream for FPGA"
+	@echo "sim_rtl      Simulate rtl"
 	@echo "clean        Cleans directory"
 	@echo "#--------------------------------------------------------------------"
 .PHONY: list 

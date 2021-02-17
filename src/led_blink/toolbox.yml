@@ -11,6 +11,7 @@ tools:
 - "${internal.env.PROJECT_HOME}/toolbox-buildfile-tools/make/make"
 - "${internal.env.PROJECT_HOME}/toolbox-xilinx-tools/toolbox_xilinx_tools/2020.2/implement/implement"
 - "${internal.env.PROJECT_HOME}/toolbox-xilinx-tools/toolbox_xilinx_tools/2020.2/upload/upload"
+- "${internal.env.PROJECT_HOME}/toolbox-xilinx-tools/toolbox_xilinx_tools/2020.2/simulate/simulate"
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
@@ -19,18 +20,21 @@ tools:
 jobs.build.tasks: [{tool: Make}]
 jobs.build.description: "Generates a Makefile w/ all jobs as targets"
 
-jobs.implement.tasks: [{tool: XilinxImplementTool, additional_configs: [configs/implement.yml]}]
+jobs.implement.tasks: [{tool: XilinxImplementTool, additional_configs: [src/implement.yml]}]
 jobs.implement.description: "Implement design and generate bitstream for FPGA"
 
-jobs.upload.tasks: [{tool: XilinxUploadTool, additional_configs: [configs/implement.yml]}]
+jobs.upload.tasks: [{tool: XilinxUploadTool, additional_configs: [src/implement.yml]}]
 jobs.upload.description: "Implement design and generate bitstream for FPGA"
+
+jobs.sim_rtl.tasks: [{tool: XsimTool, additional_configs: [src/sim_rtl.yml]}]
+jobs.sim_rtl.description: "Simulate rtl"
   
 make.targets:
 - name: clean
   description: "Cleans directory"
   outputs: []
   dependencies: []
-  commands: ["rm -rf build *.jou *.log"]
+  commands: ["rm -rf build *.jou *.log *.pb"]
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------

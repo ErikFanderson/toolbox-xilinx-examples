@@ -1,0 +1,20 @@
+# Top level tb
+simulate.testbench: "led_blink"
+
+# Files
+simulate.include_dirs:
+- "test/tb_classes"
+simulate.defines: []
+simulate.packages:
+- "test/led_blink_pkg.sv"
+simulate.rtl:
+- "src/led_blink.v"
+simulate.test:
+- "/tools/Xilinx/Vivado/2020.2/data/verilog/src/unisims/IBUFDS.v"
+- "/tools/Xilinx/Vivado/2020.2/data/verilog/src/retarget/IBUFGDS.v"
+- "test/led_blink_bfm.sv"
+
+# Options
+simulate.include_uvm: true 
+simulate.verilog_version: "sv"
+simulate.options: []

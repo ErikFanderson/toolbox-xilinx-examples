@@ -1,8 +1,12 @@
-module blink (clk_p, clk_n, led);
+`default_nettype none
 
-input clk_p;
-input clk_n;
-output led;
+module led_blink (clk_p, clk_n, led);
+
+input wire clk_p;
+input wire clk_n;
+output wire led;
+
+wire clk_buf;
 
 // Convert LVDS clock to internal clock signal
 IBUFGDS #(
@@ -34,3 +38,5 @@ end
 assign led = led_status;
 
 endmodule 
+
+`default_nettype wire 
