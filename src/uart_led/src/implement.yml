@@ -103,6 +103,12 @@ implement.ports:
 - name: "i_uart_cts_n"
   package_pin: "AT32" # USB_RTS (i.e. UART_CTS)
   iostandard: "LVCMOS18"
+- name: "o_fmc_debug_0"
+  package_pin: "K39" # FMC G6 (FMC debug card J1 pin 1)
+  iostandard: "LVCMOS18"
+- name: "o_fmc_debug_1"
+  package_pin: "N38" # FMC C14 (FMC debug card J1 pin 2)
+  iostandard: "LVCMOS18"
 
 # Information for connecting to hardware server and uploading to target
 upload.bitstream: "build/implement/current/uart_led_top.bit"

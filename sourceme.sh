@@ -22,6 +22,9 @@ cd toolbox; source sourceme.sh; cd ..
 # Source toolbox-xilinx-tools sourceme
 cd toolbox-xilinx-tools; source sourceme.sh; cd ..
 
+# Source uart-interface-generator sourceme
+cd uart-interface-generator; source sourceme.sh; cd ..
+
 # Set SSP1_FPGA_HOME variable
 export PROJECT_HOME=$PWD
 

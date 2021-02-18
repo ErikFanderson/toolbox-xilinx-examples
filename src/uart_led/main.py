@@ -45,34 +45,43 @@ class UARTDriver():
     
     def read_byte(self, address: int) -> int:
         self.ser.write((address + 128).to_bytes(1, "big"))
-        time.sleep(1)
+        #time.sleep(1)
         return int.from_bytes(self.ser.read(), "big")
 
 if __name__ == '__main__':
     drv = UARTDriver(
-        port="/dev/ttyUSB2",
+        port="/dev/ttyUSB0",
         baudrate=9600,
         timeout=1,
         write_timeout=1,
         bytesize=serial.EIGHTBITS,
-        rtscts=True,
+        rtscts=False,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE)
     
+    # Sending single bytes
+    #for i in range(50):
+    #    print(f"[{i}] Sending 0x55")
+    #    drv.ser.write(bytes([0x55]))
+    #    time.sleep(2)
+    #    print(f"[{i}] Sending 0xaa")
+    #    drv.ser.write(bytes([0xaa]))
+    #    time.sleep(2)
+    #    #time.sleep(2)
+    #    #drv.write_byte(0, 0x55)
+    #    #print(drv.read_byte(0))
+    
     #drv.ser.write(bytes([0x0]))
     #drv.ser.write(bytes([0x55]))
-    for i in range(50):
-        drv.ser.write(bytes([i]))
-        time.sleep(2)
     
-    #drv.write_byte(0, 0x55)
-    #print(drv.read_byte(0))
+    #for i in range(50):
+    #    drv.ser.write(bytes([i]))
+    #    time.sleep(2)
     
     #print(drv.write_byte(0, 0x55))
     #time.sleep(1)
     #drv.write_byte(0, 0xaa)
 
-    
     #drv.ser.write(bytes([128]))
     #print(int(drv.ser.read()))
     #drv.open()
@@ -80,10 +89,11 @@ if __name__ == '__main__':
     #time.sleep(1)
     #print(hex(99))
     #drv.write_byte(0, 99)
-    #for i in range(100):
-    #    drv.write_byte(0, i)
-    #    time.sleep(1)
-    #drv.ser.write(bytes([0, 0x10]))
+    for i in range(100):
+        print(f"LED write: {i}")
+        drv.write_byte(0, i)
+        print(f"LED read: {drv.read_byte(0)}")
+        time.sleep(1)
     
     ## Write something
     #drv.ser.write(bytes([0]))
