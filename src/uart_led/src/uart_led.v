@@ -10,8 +10,8 @@ module uart_led #(
     input wire i_uart_rx,
     output wire o_uart_rts_n,
     input wire i_uart_cts_n,
-    output wire o_uart_rx_error,
-    output wire [7:0] o_mem_leds,
+    output wire [3:0] o_mem_leds0,
+    output wire [3:0] o_mem_leds1,
     output wire o_mem_reset
 );
 
@@ -20,41 +20,40 @@ module uart_led #(
 //--------------------------------------------------------------------------------
 wire [7:0] wmem [127:0];
 wire [7:0] rmem [127:0];
-wire tx_en;
-wire [7:0] tx_byte;
-wire rx_done;
-wire [7:0] rx_byte;
-wire rx_busy;
-wire tx_busy;
-wire rx_data_valid;
-wire rx_data_ready;
-wire tx_data_valid;
-wire tx_data_ready;
+wire tx_valid;
+wire tx_ready;
+wire [7:0] tx_data;
+wire rx_valid;
+wire rx_ready;
+wire [7:0] rx_data;
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
 // Module instances
 //--------------------------------------------------------------------------------
 uart #(
-    .baud_rate(BaudRate),
-    .sys_clk_freq(SystemClockFrequency)
+    .BaudRate(BaudRate),
+    .SystemClockFrequency(SystemClockFrequency),
+    .DataSize(8)
 ) uart_inst (
-    .clk(i_clk),
-    .rst(i_rst),
-    .rx(i_uart_rx),
-    .tx(o_uart_tx),
-    .transmit(tx_en),
-    .tx_byte(tx_byte),
-    .received(rx_done),
-    .rx_byte(rx_byte),
-    .is_receiving(rx_busy),
-    .is_transmitting(tx_busy),
-    .recv_error(o_uart_rx_error)
+    .i_clk(i_clk),
+    .i_rst(i_rst),
+    .i_rx(i_uart_rx),
+    .o_tx(o_uart_tx),
+    .i_cts_n(i_uart_cts_n),
+    .o_rts_n(o_uart_rts_n),
+    .o_tx_ready(tx_ready),
+    .i_tx_valid(tx_valid),
+    .i_tx_data(tx_data),
+    .i_rx_ready(rx_ready),
+    .o_rx_valid(rx_valid),
+    .o_rx_data(rx_data)
 );
 uart_led_mem_map uart_led_mem_map_inst (
     .uart_led_write_mem(wmem),
     .uart_led_read_mem(rmem),
-    .leds(o_mem_leds),
+    .leds0(o_mem_leds0),
+    .leds1(o_mem_leds1),
     .reset(o_mem_reset)
 );
 uart_mem_access #(
@@ -62,12 +61,12 @@ uart_mem_access #(
 ) uart_mem_access_inst (
     .i_clk(i_clk),
     .i_rst(i_rst),
-    .i_rx_data(rx_byte),
-    .i_rx_data_valid(rx_data_valid),
-    .o_rx_data_ready(rx_data_ready),
-    .o_tx_data(tx_byte),
-    .o_tx_data_valid(tx_data_valid),
-    .i_tx_data_ready(tx_data_ready),
+    .i_rx_data(rx_data),
+    .i_rx_valid(rx_valid),
+    .o_rx_ready(rx_ready),
+    .o_tx_data(tx_data),
+    .o_tx_valid(tx_valid),
+    .i_tx_ready(tx_ready),
     .o_wmem(wmem),
     .i_rmem(rmem)
 );
@@ -86,10 +85,6 @@ uart_mem_access #(
 //--------------------------------------------------------------------------------
 // Internals of module
 //--------------------------------------------------------------------------------
-assign rx_data_valid = rx_done;
-assign o_uart_rts_n = !(rx_data_ready && rx_busy);
-assign tx_data_ready = !(i_uart_cts_n || tx_busy);
-assign tx_en = tx_data_valid;
 //--------------------------------------------------------------------------------
 
 endmodule
