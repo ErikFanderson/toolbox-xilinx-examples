@@ -1,0 +1,143 @@
+# TODO Add input and output delays on ports
+# TODO need to understand why timing violations appear between domains and what to do about it!
+
+# Set target part for vivado (using vc707 evaluation board)
+implement.part: "xc7vx485tffg1761-2"
+implement.execute: true 
+
+# Set the units for all variable
+implement.units.time: "ns"
+implement.units.capacitance: "pF"
+implement.units.current: "mA"
+implement.units.voltage: "V"
+implement.units.power: "mW"
+implement.units.resistance: "ohm"
+implement.units.altitude: "meters"
+
+# Set top level module
+implement.top: "i2c_user_clock"
+
+# Files
+implement.verilog:
+- "src/uart_i2c_user_clock_defines.v"
+- "src/uart_i2c_user_clock.v"
+- "src/uart_i2c_user_clock_mem_map.v"
+- "src/i2c_user_clock.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/uart/uart.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/uart/uart_tx.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/uart/uart_rx.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/uart/uart_mem_access.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/misc/flex_clk_div.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/i2c/i2c_master.v"
+implement.vhdl: []
+implement.xdc: []
+implement.post_synthesis_xdc: []
+
+# Set configuration method for uploading bitstream
+implement.config:
+  mode: "B_SCAN"
+  bank_voltage_select: "GND"
+  voltage: 1.8
+
+implement.primary_clocks:
+- name: "i_sys_clk_p"
+  object: "i_sys_clk_p"
+  type: "port"
+  period: 5.0 
+- name: "i_sys_clk_n"
+  object: "i_sys_clk_n"
+  type: "port"
+  period: 5.0 
+- name: "i_user_clk_p"
+  object: "i_user_clk_p"
+  type: "port"
+  period: 1.25 
+- name: "i_user_clk_n"
+  object: "i_user_clk_n"
+  type: "port"
+  period: 1.25 
+
+implement.generated_clocks:
+- name: "sys_clk"
+  object: "sys_clk_ibufgds/O"
+  type: "pin"
+  source: "i_sys_clk_p"
+  source_type: "port"
+  divisor: 1
+- name: "o_user_clk"
+  object: "user_clk_ibufgds/O"
+  type: "pin"
+  source: "i_user_clk_p"
+  source_type: "port"
+  divisor: 1
+- name: "i2c_clk"
+  object: "clk_div/o_out_clk"
+  type: "pin"
+  source: "sys_clk_ibufgds/O"
+  source_type: "pin"
+  divisor: 16
+
+#implement.input_delay_constraints:
+#implement.output_delay_constraints:
+
+implement.ports:
+- name: "i_sys_clk_p"
+  package_pin: "E19" # SYSCLK_P 
+  iostandard: "LVDS"
+- name: "i_sys_clk_n"
+  package_pin: "E18" # SYSCLK_N 
+  iostandard: "LVDS"
+- name: "i_user_clk_p"
+  package_pin: "AK34" # USER_CLOCK_P
+  iostandard: "LVDS"
+- name: "i_user_clk_n"
+  package_pin: "AL34" # USER_CLOCK_N
+  iostandard: "LVDS"
+- name: "o_uart_tx"
+  package_pin: "AU36" # USB_RX (i.e. UART_TX)
+  iostandard: "LVCMOS18"
+- name: "i_uart_rx"
+  package_pin: "AU33" # USB_TX (i.e. UART_RX)
+  iostandard: "LVCMOS18"
+- name: "o_uart_rts_n"
+  package_pin: "AR34" # USB_CTS (i.e. UART_RTS)
+  iostandard: "LVCMOS18"
+- name: "i_uart_cts_n"
+  package_pin: "AT32" # USB_RTS (i.e. UART_CTS)
+  iostandard: "LVCMOS18"
+- name: "o_user_clk"
+  package_pin: "AN31" # USER_SMA_GPIO_P (J33.1)
+  iostandard: "LVCMOS18"
+- name: "o_leds[0]"
+  package_pin: "AM39" # GPIO_LED_0
+  iostandard: "LVCMOS18"
+- name: "o_leds[1]"
+  package_pin: "AN39" # GPIO_LED_1
+  iostandard: "LVCMOS18"
+- name: "o_leds[2]"
+  package_pin: "AR37" # GPIO_LED_2
+  iostandard: "LVCMOS18"
+- name: "o_leds[3]"
+  package_pin: "AT37" # GPIO_LED_3
+  iostandard: "LVCMOS18"
+- name: "o_leds[4]"
+  package_pin: "AR35" # GPIO_LED_4
+  iostandard: "LVCMOS18"
+- name: "o_leds[5]"
+  package_pin: "AP41" # GPIO_LED_5
+  iostandard: "LVCMOS18"
+- name: "o_leds[6]"
+  package_pin: "AP42" # GPIO_LED_6
+  iostandard: "LVCMOS18"
+- name: "o_leds[7]"
+  package_pin: "AU39" # GPIO_LED_7
+  iostandard: "LVCMOS18"
+
+# Information for connecting to hardware server and uploading to target
+upload.bitstream: "build/implement/current/uart_loopback.bit"
+upload.hw_server.hostname: "localhost"
+upload.hw_server.port: 3121
+upload.target: "*xilinx_tcf/Digilent/210203A03554A"
+#upload.target: "*xilinx_tcf/Digilent/210203A023BEA"
+upload.execute: true
+upload.query_targets: false

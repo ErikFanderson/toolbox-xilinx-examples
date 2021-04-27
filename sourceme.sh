@@ -7,7 +7,7 @@ cd toolbox; source sourceme.sh; cd ..
 cd toolbox-xilinx-tools; source sourceme.sh; cd ..
 
 # Set SSP1_FPGA_HOME variable
-export PROJECT_HOME=$PWD
+export TOOLBOX_XILINX_EXAMPLES_HOME=$PWD
 
 # Vivado setup (adds stuff to path)
 source /tools/Xilinx/Vivado/2020.2/settings64.sh

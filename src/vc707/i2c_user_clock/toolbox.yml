@@ -8,9 +8,9 @@
 #------------------------------------------------------------------------------
 tools:
 - "${internal.env.TOOLBOX_HOME}/toolbox/tools/jinja_tool/jinja_tool"
-- "${internal.env.PROJECT_HOME}/toolbox-buildfile-tools/make/make"
-- "${internal.env.PROJECT_HOME}/toolbox-xilinx-tools/toolbox_xilinx_tools/2020.2/implement/implement"
-- "${internal.env.PROJECT_HOME}/toolbox-xilinx-tools/toolbox_xilinx_tools/2020.2/upload/upload"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/toolbox-buildfile-tools/make/make"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/toolbox-xilinx-tools/toolbox_xilinx_tools/2020.2/implement/implement"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/toolbox-xilinx-tools/toolbox_xilinx_tools/2020.2/upload/upload"
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
