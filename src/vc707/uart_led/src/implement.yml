@@ -18,10 +18,10 @@ implement.top: "uart_led_top"
 implement.verilog:
 - "src/uart_led_defines.v"
 - "src/uart_led_top.v"
-- "${internal.env.PROJECT_HOME}/verilog-library/src/uart/uart.v"
-- "${internal.env.PROJECT_HOME}/verilog-library/src/uart/uart_tx.v"
-- "${internal.env.PROJECT_HOME}/verilog-library/src/uart/uart_rx.v"
-- "${internal.env.PROJECT_HOME}/verilog-library/src/uart/uart_mem_access.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/uart/uart.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/uart/uart_tx.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/uart/uart_rx.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/uart/uart_mem_access.v"
 - "src/uart_led.v"
 - "src/uart_led_mem_map.v"
 implement.vhdl: []
@@ -114,7 +114,7 @@ implement.ports:
 upload.bitstream: "build/implement/current/uart_led_top.bit"
 upload.hw_server.hostname: "localhost"
 upload.hw_server.port: 3121
-upload.target: "*xilinx_tcf/Digilent/210203A03554A"
-#upload.target: "*xilinx_tcf/Digilent/210203A023BEA"
+#upload.target: "*xilinx_tcf/Digilent/210203A03554A"
+upload.target: "*xilinx_tcf/Digilent/210203A023BEA"
 upload.execute: true
 upload.query_targets: false 

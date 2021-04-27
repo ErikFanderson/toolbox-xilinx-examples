@@ -51,11 +51,11 @@ implement.primary_clocks:
 - name: "i_user_clk_p"
   object: "i_user_clk_p"
   type: "port"
-  period: 1.25 
+  period: 1.25
 - name: "i_user_clk_n"
   object: "i_user_clk_n"
   type: "port"
-  period: 1.25 
+  period: 1.25
 
 implement.generated_clocks:
 - name: "sys_clk"
@@ -70,15 +70,25 @@ implement.generated_clocks:
   source: "i_user_clk_p"
   source_type: "port"
   divisor: 1
-- name: "i2c_clk"
+- name: "div_clk"
   object: "clk_div/o_out_clk"
   type: "pin"
   source: "sys_clk_ibufgds/O"
   source_type: "pin"
-  divisor: 16
+  divisor: 20 
 
-#implement.input_delay_constraints:
-#implement.output_delay_constraints:
+implement.input_delay_constraints:
+- port: "i_uart_*"
+  clock: "div_clk"
+  clock_edge: "rise"
+  min_delay: 5.0 
+  max_delay: 5.0 
+implement.output_delay_constraints:
+- port: "o_uart_*"
+  clock: "sys_clk"
+  clock_edge: "rise"
+  min_delay: 5.0 
+  max_delay: 5.0 
 
 implement.ports:
 - name: "i_sys_clk_p"
@@ -134,10 +144,10 @@ implement.ports:
   iostandard: "LVCMOS18"
 
 # Information for connecting to hardware server and uploading to target
-upload.bitstream: "build/implement/current/uart_loopback.bit"
+upload.bitstream: "build/implement/current/i2c_user_clock.bit"
 upload.hw_server.hostname: "localhost"
 upload.hw_server.port: 3121
-upload.target: "*xilinx_tcf/Digilent/210203A03554A"
-#upload.target: "*xilinx_tcf/Digilent/210203A023BEA"
+#upload.target: "*xilinx_tcf/Digilent/210203A03554A"
+upload.target: "*xilinx_tcf/Digilent/210203A023BEA"
 upload.execute: true
 upload.query_targets: false

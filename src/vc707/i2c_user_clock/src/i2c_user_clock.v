@@ -43,7 +43,7 @@ output wire [7:0] o_leds;
 output wire o_user_clk;
 
 // Signals
-wire sys_clk, i2c_clk;
+wire sys_clk, div_clk;
 wire rst;
 wire rv0_valid, rv0_ready;
 wire [6:0] rv0_slave_address;
@@ -76,12 +76,24 @@ IBUFGDS #(
     .IB(i_sys_clk_n) // Diff_n clock buffer input (connect directly to top-level port)
 );
 
+// Clock divider (DIVIDE BY 20)
+flex_clk_div #(
+    .CntWidth(5)
+) clk_div (
+    .i_ref_clk(sys_clk),
+    .i_rst(1'b0),
+    .i_div_cnt(5'd19),
+    .i_high_cnt(5'd10),
+    .i_low_cnt(5'd0),
+    .o_out_clk(div_clk)
+);
+
 // UART interface
 uart_i2c_user_clock #(
     .BaudRate(9600),
-    .SystemClockFrequency(156250000)
+    .SystemClockFrequency(10000000) // (200 MHz) / 20 = 10 MHz
 ) (
-    .i_clk(sys_clk),
+    .i_clk(div_clk),
     .i_rst(1'b0),
     .o_uart_tx(o_uart_tx),
     .i_uart_rx(i_uart_rx),
@@ -107,21 +119,9 @@ uart_i2c_user_clock #(
     .i_mem_rv1_rdata3(rv1_rdata[3])
 );
 
-// Clock divider (DIVIDE BY 16)
-flex_clk_div #(
-    .CntWidth(4)
-) clk_div (
-    .i_ref_clk(sys_clk),
-    .i_rst(rst),
-    .i_div_cnt(4'd15),
-    .i_high_cnt(4'd8),
-    .i_low_cnt(4'd0),
-    .o_out_clk(i2c_clk)
-);
-
 // I2C controller for configuring user clock frequency
 i2c_master i2c_master_inst (
-    .i_clk(i2c_clk),
+    .i_clk(div_clk),
     .i_rst(rst),
     .o_sda_oe_n(), // TODO
     .o_scl_oe_n(), // TODO

@@ -1,4 +1,19 @@
 #----------------------------------------------------------
+# Target "list" - lists all found jobs
+#----------------------------------------------------------
+list:
+	@echo "#--------------------------------------------------------------------"
+	@echo "# Toolbox generated make targets"
+	@echo "#--------------------------------------------------------------------"
+	@echo "build        Generates a Makefile w/ all jobs as targets"
+	@echo "implement    Implement design and generate bitstream for FPGA"
+	@echo "upload       Implement design and generate bitstream for FPGA"
+	@echo "clean        Cleans directory"
+	@echo "#--------------------------------------------------------------------"
+.PHONY: list 
+#----------------------------------------------------------
+
+#----------------------------------------------------------
 # Target "build" 
 #----------------------------------------------------------
 build: 
@@ -30,17 +45,3 @@ clean:
 .PHONY: clean
 #----------------------------------------------------------
 
-#----------------------------------------------------------
-# Target "list" - lists all found jobs
-#----------------------------------------------------------
-list:
-	@echo "#--------------------------------------------------------------------"
-	@echo "# Toolbox generated make targets"
-	@echo "#--------------------------------------------------------------------"
-	@echo "build        Generates a Makefile w/ all jobs as targets"
-	@echo "implement    Implement design and generate bitstream for FPGA"
-	@echo "upload       Implement design and generate bitstream for FPGA"
-	@echo "clean        Cleans directory"
-	@echo "#--------------------------------------------------------------------"
-.PHONY: list 
-#----------------------------------------------------------
