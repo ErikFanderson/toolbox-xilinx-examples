@@ -24,12 +24,31 @@ if __name__ == '__main__':
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE)
  
-    for i in range(50):
-        drv.write_register("LED", "leds", "01010101")
-        print(drv.read_register("LED", "leds"))
-        time.sleep(1)
-        drv.write_register("LED", "leds", "10101010")
-        print(drv.read_register("LED", "leds"))
-        time.sleep(1)
-    
+    ## LED test to make sure that the UART is functioning
+    #for i in range(5):
+    #    drv.write_register("LED", "leds", "01010101")
+    #    print(drv.read_register("LED", "leds"))
+    #    time.sleep(1)
+    #    drv.write_register("LED", "leds", "10101010")
+    #    print(drv.read_register("LED", "leds"))
+    #    time.sleep(1)
+   
+    # Try and read something from I2C
+    print("Reset i2c controller")
+    drv.write_register("RESET", "reset", "1")
+    time.sleep(0.25)
+    drv.write_register("RESET", "reset", "0")
+    time.sleep(0.25)
+
+    # Initiate I2C read
+    drv.write_register("I2C", "rv0_valid", "0")
+    print("Initiate I2C read")
+    drv.write_register("I2C", "rv0_slave_address", "1110100") # Address: 0x74
+    drv.write_register("I2C", "rv0_reg_address", "00000010")
+    drv.write_register("I2C", "rv0_burst_count", "00")
+    drv.write_register("I2C", "rv0_rd_wrn", "1")
+    drv.write_register("I2C", "rv0_valid", "1")
+    time.sleep(0.25)
+    print(drv.read_register("I2C", "rv1_rdata0"))
+
     drv.close()
