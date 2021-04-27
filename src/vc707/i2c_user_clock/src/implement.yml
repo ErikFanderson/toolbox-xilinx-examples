@@ -1,4 +1,4 @@
-# TODO Add input and output delays on ports
+# TODO Add input and output delays on ports (write guide and understand these constraints well!)
 # TODO need to understand why timing violations appear between domains and what to do about it!
 
 # Set target part for vivado (using vc707 evaluation board)
@@ -28,6 +28,7 @@ implement.verilog:
 - "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/uart/uart_rx.v"
 - "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/uart/uart_mem_access.v"
 - "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/misc/flex_clk_div.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/misc/pulse_generator.v"
 - "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/i2c/i2c_master.v"
 implement.vhdl: []
 implement.xdc: []
@@ -71,11 +72,17 @@ implement.generated_clocks:
   source_type: "port"
   divisor: 1
 - name: "div_clk"
-  object: "clk_div/o_out_clk"
+  object: "div_clk_div/o_out_clk"
   type: "pin"
   source: "sys_clk_ibufgds/O"
   source_type: "pin"
   divisor: 20 
+- name: "i2c_clk"
+  object: "i2c_clk_div/o_out_clk"
+  type: "pin"
+  source: "div_clk_div/o_out_clk"
+  source_type: "pin"
+  divisor: 40 
 
 implement.input_delay_constraints:
 - port: "i_uart_*"
@@ -116,7 +123,7 @@ implement.ports:
   package_pin: "AT32" # USB_RTS (i.e. UART_CTS)
   iostandard: "LVCMOS18"
 - name: "o_user_clk"
-  package_pin: "AN31" # USER_SMA_GPIO_P (J33.1)
+  package_pin: "AJ32" # USER_SMA_CLK_P (J31.1)
   iostandard: "LVCMOS18"
 - name: "o_leds[0]"
   package_pin: "AM39" # GPIO_LED_0
@@ -141,6 +148,15 @@ implement.ports:
   iostandard: "LVCMOS18"
 - name: "o_leds[7]"
   package_pin: "AU39" # GPIO_LED_7
+  iostandard: "LVCMOS18"
+- name: "o_i2c_rst_n"
+  package_pin: "AY42" # IIC_MUX_RESET_B_LS (reset for i2c bus mux) 
+  iostandard: "LVCMOS18"
+- name: "io_sda"
+  package_pin: "AU32" # IIC_SDA_MAIN_LS
+  iostandard: "LVCMOS18"
+- name: "io_scl"
+  package_pin: "AT35" # IIC_SCL_MAIN_LS
   iostandard: "LVCMOS18"
 
 # Information for connecting to hardware server and uploading to target

@@ -24,7 +24,11 @@ module i2c_user_clock (
     
     o_leds,
     
-    o_user_clk
+    o_user_clk,
+
+    io_sda,
+    io_scl,
+    o_i2c_rst_n
 );
 
 // I/O
@@ -42,10 +46,14 @@ input wire i_uart_cts_n;
 output wire [7:0] o_leds;
 output wire o_user_clk;
 
+inout wire io_sda;
+inout wire io_scl;
+output wire o_i2c_rst_n;
+
 // Signals
-wire sys_clk, div_clk;
+wire sys_clk, div_clk, i2c_clk;
 wire rst;
-wire rv0_valid, rv0_ready;
+wire rv0_valid, rv0_valid_pulse, rv0_ready;
 wire [6:0] rv0_slave_address;
 wire [7:0] rv0_reg_address;
 wire [1:0] rv0_burst_count;
@@ -53,6 +61,7 @@ wire rv0_rd_wrn;
 wire [3:0] [7:0] rv0_wdata;
 wire rv1_valid, rv1_ready;
 wire [3:0] [7:0] rv1_rdata;
+wire sda, scl, sda_oe_n, scl_oe_n;
 
 // Convert LVDS clock to internal clock signal
 IBUFGDS #(
@@ -76,10 +85,39 @@ IBUFGDS #(
     .IB(i_sys_clk_n) // Diff_n clock buffer input (connect directly to top-level port)
 );
 
+// SDA I2C I/O buffer
+IOBUF #(
+    .DRIVE(12), // Specify the output drive strength
+    .IBUF_LOW_PWR("TRUE"), // Low Power - "TRUE", High Performance = "FALSE"
+    .IOSTANDARD("DEFAULT"), // Specify the output I/O standard
+    .SLEW("SLOW") // Specify the output slew rate
+) sda_iobuf (
+    .O(sda), // Buffer output
+    .IO(io_sda), // Buffer inout port (connect directly to top-level port)
+    .I(1'b0), // Buffer input
+    .T(sda_oe_n) // 3-state enable input, high=input, low=output
+);
+
+// SCL I2C I/O buffer
+IOBUF #(
+    .DRIVE(12), // Specify the output drive strength
+    .IBUF_LOW_PWR("TRUE"), // Low Power - "TRUE", High Performance = "FALSE"
+    .IOSTANDARD("DEFAULT"), // Specify the output I/O standard
+    .SLEW("SLOW") // Specify the output slew rate
+) scl_iobuf (
+    .O(scl), // Buffer output
+    .IO(io_scl), // Buffer inout port (connect directly to top-level port)
+    .I(1'b0), // Buffer input
+    .T(scl_oe_n) // 3-state enable input, high=input, low=output
+);
+
+// Pull i2c bus mux out of reset
+assign o_i2c_rst_n = 1'b1;
+
 // Clock divider (DIVIDE BY 20)
 flex_clk_div #(
     .CntWidth(5)
-) clk_div (
+) div_clk_div (
     .i_ref_clk(sys_clk),
     .i_rst(1'b0),
     .i_div_cnt(5'd19),
@@ -101,7 +139,7 @@ uart_i2c_user_clock #(
     .i_uart_cts_n(i_uart_cts_n),
     .o_mem_leds(o_leds),
     .o_mem_reset(rst),
-    .o_mem_rv0_valid(rv0_valid),
+    .o_mem_rv0_valid_pulse(rv0_valid_pulse),
     .i_mem_rv0_ready(rv0_ready),
     .o_mem_rv0_slave_address(rv0_slave_address),
     .o_mem_rv0_reg_address(rv0_reg_address),
@@ -119,14 +157,34 @@ uart_i2c_user_clock #(
     .i_mem_rv1_rdata3(rv1_rdata[3])
 );
 
+// Clock divider (DIVIDE BY 40) => 
+flex_clk_div #(
+    .CntWidth(6)
+) i2c_clk_div (
+    .i_ref_clk(div_clk),
+    .i_rst(1'b0),
+    .i_div_cnt(6'd39),
+    .i_high_cnt(6'd20),
+    .i_low_cnt(6'd0),
+    .o_out_clk(i2c_clk)
+);
+
+// Pulse gen
+pulse_generator valid_pulse (
+    .i_clk(i2c_clk),
+    .i_rst(rst),
+    .i_in(rv0_valid_pulse),
+    .o_out(rv0_valid)
+);
+
 // I2C controller for configuring user clock frequency
 i2c_master i2c_master_inst (
-    .i_clk(div_clk),
+    .i_clk(i2c_clk),
     .i_rst(rst),
-    .o_sda_oe_n(), // TODO
-    .o_scl_oe_n(), // TODO
-    .i_sda(), // TODO
-    .i_scl(), // TODO
+    .o_sda_oe_n(sda_oe_n),
+    .o_scl_oe_n(scl_oe_n),
+    .i_sda(sda),
+    .i_scl(scl),
     .i_rv0_valid(rv0_valid),
     .o_rv0_ready(rv0_ready),
     .i_rv0_slave_address(rv0_slave_address),

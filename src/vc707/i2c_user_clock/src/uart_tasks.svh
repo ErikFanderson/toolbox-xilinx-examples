@@ -82,8 +82,8 @@ endtask
 //------------------------------------------------------------------------------
 // Field: I2C
 //------------------------------------------------------------------------------
-// Register: rv0_valid
-task read_FIELD_I2C_REG_rv0_valid(output [999:0] data);
+// Register: rv0_valid_pulse
+task read_FIELD_I2C_REG_rv0_valid_pulse(output [999:0] data);
     logic [999:0] rdata;
     begin
         read_all_bytes(2, 2, rdata);
@@ -91,7 +91,7 @@ task read_FIELD_I2C_REG_rv0_valid(output [999:0] data);
     end
 endtask
 
-task write_FIELD_I2C_REG_rv0_valid(input [999:0] data);
+task write_FIELD_I2C_REG_rv0_valid_pulse(input [999:0] data);
     logic [999:0] rdata, wdata;
     begin
         read_all_bytes(2, 2, rdata);

@@ -8,7 +8,7 @@ uart_i2c_user_clock_mem_map uart_i2c_user_clock_instance
 .uart_i2c_user_clock_read_mem(uart_i2c_user_clock_read_mem),
 .leds(leds),
 .reset(reset),
-.rv0_valid(rv0_valid),
+.rv0_valid_pulse(rv0_valid_pulse),
 .rv0_ready(rv0_ready),
 .rv0_slave_address(rv0_slave_address),
 .rv0_reg_address(rv0_reg_address),
@@ -33,7 +33,7 @@ wire [7:0] uart_i2c_user_clock_write_mem [127:0];
 wire [7:0] uart_i2c_user_clock_read_mem [127:0];
 wire [7:0] leds;
 wire reset;
-wire rv0_valid;
+wire rv0_valid_pulse;
 wire [6:0] rv0_slave_address;
 wire [7:0] rv0_reg_address;
 wire [1:0] rv0_burst_count;
