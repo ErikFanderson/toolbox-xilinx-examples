@@ -6,6 +6,7 @@
 """Docstring for module main"""
 
 # Imports - standard library
+import time
 
 # Imports - 3rd party packages
 
