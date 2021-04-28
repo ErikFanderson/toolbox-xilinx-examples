@@ -7,14 +7,29 @@
 
 # Imports - standard library
 import time
+from abc import ABC, abstractmethod
 
 # Imports - 3rd party packages
 
 # Imports - local source
 from UARTDriver import *
+from uart_to_i2c import *
+from si570 import *
+
+def led_test():
+    """LED test to make sure that the UART is functioning"""
+    print("# BEGIN LED TEST #")
+    for i in range(5):
+        drv.write_register("LED", "leds", "01010101")
+        print(drv.read_register("LED", "leds"))
+        time.sleep(1)
+        drv.write_register("LED", "leds", "10101010")
+        print(drv.read_register("LED", "leds"))
+        time.sleep(1)
+    print("# FINISH LED TEST #")
 
 if __name__ == '__main__':
-    drv = UARTDriver(
+    drv = I2CUARTDriver(
         port="/dev/ttyUSB0",
         baudrate=9600,
         timeout=1,
@@ -24,7 +39,8 @@ if __name__ == '__main__':
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE)
  
-    # Initialize all values to 0
+    # Initialize UART mem to 0
+    print("# BEGIN INIT MEMORY #")
     drv.write_register("RESET", "reset", "1")
     print(f"Field: Reset, Reg: reset, Read: {drv.read_register('RESET', 'reset')}")
     for field_name, field in drv._fields.items():
@@ -41,32 +57,14 @@ if __name__ == '__main__':
     print(f"Field: Reset, Reg: reset, Read: {drv.read_register('RESET', 'reset')}")
     print("# FINISH INIT MEMORY #")
 
-    ## LED test to make sure that the UART is functioning
-    #for i in range(5):
-    #    drv.write_register("LED", "leds", "01010101")
-    #    print(drv.read_register("LED", "leds"))
-    #    time.sleep(1)
-    #    drv.write_register("LED", "leds", "10101010")
-    #    print(drv.read_register("LED", "leds"))
-    #    time.sleep(1)
-   
-    ## Try and read something from I2C
-    #print("Reset i2c controller")
-    #drv.write_register("RESET", "reset", "1")
-    #time.sleep(0.25)
-    #drv.write_register("RESET", "reset", "0")
-    #time.sleep(0.25)
+    # Create Si570 object
+    clock = Si570_VC707(drv)
+    clock.configure_i2c_mux(0)
+    clock.i2c_read(0)
 
-    ## Initiate I2C read
-    #drv.write_register("I2C", "rv0_valid", "0")
-    #print("Initiate I2C read")
-    #drv.write_register("I2C", "rv0_slave_address", "1110100") # Address: 0x74
-    #drv.write_register("I2C", "rv0_wdata0", "00000000")
-    #drv.write_register("I2C", "rv0_burst_count_wr", "00")
-    #drv.write_register("I2C", "rv0_burst_count_rd", "00")
-    #drv.write_register("I2C", "rv0_rd_wrn", "1")
-    #drv.write_register("I2C", "rv0_valid", "1")
-    #time.sleep(0.25)
-    #print(drv.read_register("I2C", "rv1_rdata0"))
+    ## Initiate I2C read (Write channel 0 to select user clock) - PCA9548
+    #rdata = configure_i2c_mux(0)
+    #rdata = i2c_read(0x5D, 0x07)
+    #print("Register 7: " + rdata)
 
-    drv.close()
+    #drv.close()
