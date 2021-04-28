@@ -59,7 +59,7 @@ wire [1:0] rv0_burst_count_wr;
 wire [1:0] rv0_burst_count_rd;
 wire rv0_rd_wrn;
 wire [3:0] [7:0] rv0_wdata;
-wire rv1_valid, rv1_ready;
+wire rv1_valid, rv1_ready, rv1_nack;
 wire [3:0] [7:0] rv1_rdata;
 wire sda, scl, sda_oe_n, scl_oe_n;
 
@@ -151,6 +151,7 @@ uart_i2c_user_clock #(
     .o_mem_rv0_rd_wrn(rv0_rd_wrn),
     .i_mem_rv1_valid(rv1_valid),
     .o_mem_rv1_ready(rv1_ready),
+    .i_mem_rv1_nack(rv1_nack),
     .i_mem_rv1_rdata0(rv1_rdata[0]),
     .i_mem_rv1_rdata1(rv1_rdata[1]),
     .i_mem_rv1_rdata2(rv1_rdata[2]),
@@ -194,7 +195,8 @@ i2c_master i2c_master_inst (
     .i_rv0_rd_wrn(rv0_rd_wrn),
     .o_rv1_valid(rv1_valid),
     .i_rv1_ready(rv1_ready),
-    .o_rv1_rdata(rv1_rdata)
+    .o_rv1_rdata(rv1_rdata),
+    .o_rv1_nack(rv1_nack)
 );
 
 endmodule 

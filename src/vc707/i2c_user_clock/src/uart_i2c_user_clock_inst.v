@@ -20,6 +20,7 @@ uart_i2c_user_clock_mem_map uart_i2c_user_clock_instance
 .rv0_rd_wrn(rv0_rd_wrn),
 .rv1_valid(rv1_valid),
 .rv1_ready(rv1_ready),
+.rv1_nack(rv1_nack),
 .rv1_rdata0(rv1_rdata0),
 .rv1_rdata1(rv1_rdata1),
 .rv1_rdata2(rv1_rdata2),
@@ -45,6 +46,7 @@ wire rv0_rd_wrn;
 wire rv1_ready;
 wire rv0_ready;
 wire rv1_valid;
+wire rv1_nack;
 wire [7:0] rv1_rdata0;
 wire [7:0] rv1_rdata1;
 wire [7:0] rv1_rdata2;

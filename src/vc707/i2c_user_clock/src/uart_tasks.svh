@@ -334,22 +334,43 @@ task write_FIELD_I2C_REG_rv1_valid(input [999:0] data);
     end 
 endtask
 
+// Register: rv1_nack
+task read_FIELD_I2C_REG_rv1_nack(output [999:0] data);
+    logic [999:0] rdata;
+    begin
+        read_all_bytes(8, 8, rdata);
+        data = {{999{1'b0}}, rdata[0:0]};
+    end
+endtask
+
+task write_FIELD_I2C_REG_rv1_nack(input [999:0] data);
+    logic [999:0] rdata, wdata;
+    begin
+        read_all_bytes(8, 8, rdata);
+        wdata = rdata;
+        wdata[0:0] = data;
+        for (i = 0; i <= 0; i = i + 1) begin
+            write(8 + i, wdata[8*i +: 8]);
+        end 
+    end 
+endtask
+
 // Register: rv1_rdata0
 task read_FIELD_I2C_REG_rv1_rdata0(output [999:0] data);
     logic [999:0] rdata;
     begin
-        read_all_bytes(8, 8, rdata);
-        data = {{992{1'b0}}, rdata[7:0]};
+        read_all_bytes(8, 9, rdata);
+        data = {{992{1'b0}}, rdata[8:1]};
     end
 endtask
 
 task write_FIELD_I2C_REG_rv1_rdata0(input [999:0] data);
     logic [999:0] rdata, wdata;
     begin
-        read_all_bytes(8, 8, rdata);
+        read_all_bytes(8, 9, rdata);
         wdata = rdata;
-        wdata[7:0] = data;
-        for (i = 0; i <= 0; i = i + 1) begin
+        wdata[8:1] = data;
+        for (i = 0; i <= 1; i = i + 1) begin
             write(8 + i, wdata[8*i +: 8]);
         end 
     end 
@@ -359,18 +380,18 @@ endtask
 task read_FIELD_I2C_REG_rv1_rdata1(output [999:0] data);
     logic [999:0] rdata;
     begin
-        read_all_bytes(9, 9, rdata);
-        data = {{992{1'b0}}, rdata[7:0]};
+        read_all_bytes(9, 10, rdata);
+        data = {{992{1'b0}}, rdata[8:1]};
     end
 endtask
 
 task write_FIELD_I2C_REG_rv1_rdata1(input [999:0] data);
     logic [999:0] rdata, wdata;
     begin
-        read_all_bytes(9, 9, rdata);
+        read_all_bytes(9, 10, rdata);
         wdata = rdata;
-        wdata[7:0] = data;
-        for (i = 0; i <= 0; i = i + 1) begin
+        wdata[8:1] = data;
+        for (i = 0; i <= 1; i = i + 1) begin
             write(9 + i, wdata[8*i +: 8]);
         end 
     end 
@@ -380,18 +401,18 @@ endtask
 task read_FIELD_I2C_REG_rv1_rdata2(output [999:0] data);
     logic [999:0] rdata;
     begin
-        read_all_bytes(10, 10, rdata);
-        data = {{992{1'b0}}, rdata[7:0]};
+        read_all_bytes(10, 11, rdata);
+        data = {{992{1'b0}}, rdata[8:1]};
     end
 endtask
 
 task write_FIELD_I2C_REG_rv1_rdata2(input [999:0] data);
     logic [999:0] rdata, wdata;
     begin
-        read_all_bytes(10, 10, rdata);
+        read_all_bytes(10, 11, rdata);
         wdata = rdata;
-        wdata[7:0] = data;
-        for (i = 0; i <= 0; i = i + 1) begin
+        wdata[8:1] = data;
+        for (i = 0; i <= 1; i = i + 1) begin
             write(10 + i, wdata[8*i +: 8]);
         end 
     end 
@@ -401,18 +422,18 @@ endtask
 task read_FIELD_I2C_REG_rv1_rdata3(output [999:0] data);
     logic [999:0] rdata;
     begin
-        read_all_bytes(11, 11, rdata);
-        data = {{992{1'b0}}, rdata[7:0]};
+        read_all_bytes(11, 12, rdata);
+        data = {{992{1'b0}}, rdata[8:1]};
     end
 endtask
 
 task write_FIELD_I2C_REG_rv1_rdata3(input [999:0] data);
     logic [999:0] rdata, wdata;
     begin
-        read_all_bytes(11, 11, rdata);
+        read_all_bytes(11, 12, rdata);
         wdata = rdata;
-        wdata[7:0] = data;
-        for (i = 0; i <= 0; i = i + 1) begin
+        wdata[8:1] = data;
+        for (i = 0; i <= 1; i = i + 1) begin
             write(11 + i, wdata[8*i +: 8]);
         end 
     end 
