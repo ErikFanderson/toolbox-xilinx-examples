@@ -58,22 +58,29 @@ if __name__ == '__main__':
     print("# FINISH INIT MEMORY #")
 
     # Create Si570 object
-    clock = Si570_VC707(drv)
+    clock = Si570_VC707(drv, 114284672.05569899)
     clock.configure_i2c_mux(0)
     
-    ## Default (156.25 MHz)
+    # Default (156.25 MHz)
     #if clock.set_output_frequency_raw(4, 8, 43.750398982316256):
-    #    print(clock.get_output_frequency())
+    #    print(clock.get_string_config())
+    #time.sleep(1)
+    #
+    ## (160 MHz)
+    #if clock.set_output_frequency_raw(4, 8, 44.80040855789185):
+    #    print(clock.get_string_config())
+    #time.sleep(1)
 
-    ## 2xDefault (2x156.25 MHz)
-    #if clock.set_output_frequency_raw(4, 16, 43.750398982316256):
-    #    print(clock.get_output_frequency())
+    ## Default/2 (156.25/2 MHz)
+    #if clock.set_output_frequency_raw(4, 16, 50.750398982316256):
+    #    print(clock.get_string_config())
+    #time.sleep(1)
     
-    ## Default (156.25 MHz)
-    #if clock.set_output_frequency_raw(4, 8, 43.750398982316256):
-    #    print(clock.get_output_frequency())
-
-    ## 2xDefault (1.5x156.25 MHz)
-    #if clock.set_output_frequency_raw(6, 8, 43.750398982316256):
-    #    print(clock.get_output_frequency())
+    ## Default*2 (156.25*2 MHz)
+    #if clock.set_output_frequency_raw(4, 4, 43.750398982316256):
+    #    print(clock.get_string_config())
+  
+    print(clock.calc_rfreq_frequency_limits())
+    print(clock.calc_rfreq_for_frequency(160e6))
+    
     drv.close()
