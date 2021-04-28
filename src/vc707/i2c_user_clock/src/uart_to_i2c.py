@@ -8,6 +8,7 @@
 # Imports - standard library
 import time
 from abc import ABC, abstractmethod
+from typing import List
 
 # Imports - 3rd party packages
 
@@ -28,10 +29,12 @@ class I2CUARTDriver(UARTDriver):
             self.write_register("I2C", "rv0_valid_pulse", "1")
 
     def i2c_write(self, addr: int, data: List[int]):
-        """Single byte write"""
+        """Single or multiple byte write"""
+        burst = len(data) - 1
         self.write_register("I2C", "rv0_slave_address", f"{addr:07b}")
-        self.write_register("I2C", "rv0_wdata0", f"{data:08b}")
-        self.write_register("I2C", "rv0_burst_count_wr", "00")
+        for i, dat in enumerate(data):
+            self.write_register("I2C", f"rv0_wdata{i}", f"{data[i]:08b}")
+        self.write_register("I2C", "rv0_burst_count_wr", f"{burst:02b}")
         self.write_register("I2C", "rv0_burst_count_rd", "00")
         self.write_register("I2C", "rv0_rd_wrn", "0")
         self.write_register("I2C", "rv1_ready", "1")

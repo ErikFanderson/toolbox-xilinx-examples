@@ -60,11 +60,20 @@ if __name__ == '__main__':
     # Create Si570 object
     clock = Si570_VC707(drv)
     clock.configure_i2c_mux(0)
-    clock.i2c_read(0)
+    
+    ## Default (156.25 MHz)
+    #if clock.set_output_frequency_raw(4, 8, 43.750398982316256):
+    #    print(clock.get_output_frequency())
 
-    ## Initiate I2C read (Write channel 0 to select user clock) - PCA9548
-    #rdata = configure_i2c_mux(0)
-    #rdata = i2c_read(0x5D, 0x07)
-    #print("Register 7: " + rdata)
+    ## 2xDefault (2x156.25 MHz)
+    #if clock.set_output_frequency_raw(4, 16, 43.750398982316256):
+    #    print(clock.get_output_frequency())
+    
+    ## Default (156.25 MHz)
+    #if clock.set_output_frequency_raw(4, 8, 43.750398982316256):
+    #    print(clock.get_output_frequency())
 
-    #drv.close()
+    ## 2xDefault (1.5x156.25 MHz)
+    #if clock.set_output_frequency_raw(6, 8, 43.750398982316256):
+    #    print(clock.get_output_frequency())
+    drv.close()
