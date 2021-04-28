@@ -11,8 +11,8 @@ uart_i2c_user_clock_mem_map uart_i2c_user_clock_instance
 .rv0_valid_pulse(rv0_valid_pulse),
 .rv0_ready(rv0_ready),
 .rv0_slave_address(rv0_slave_address),
-.rv0_reg_address(rv0_reg_address),
-.rv0_burst_count(rv0_burst_count),
+.rv0_burst_count_wr(rv0_burst_count_wr),
+.rv0_burst_count_rd(rv0_burst_count_rd),
 .rv0_wdata0(rv0_wdata0),
 .rv0_wdata1(rv0_wdata1),
 .rv0_wdata2(rv0_wdata2),
@@ -35,8 +35,8 @@ wire [7:0] leds;
 wire reset;
 wire rv0_valid_pulse;
 wire [6:0] rv0_slave_address;
-wire [7:0] rv0_reg_address;
-wire [1:0] rv0_burst_count;
+wire [1:0] rv0_burst_count_wr;
+wire [1:0] rv0_burst_count_rd;
 wire [7:0] rv0_wdata0;
 wire [7:0] rv0_wdata1;
 wire [7:0] rv0_wdata2;

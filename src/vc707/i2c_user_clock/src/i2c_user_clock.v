@@ -55,8 +55,8 @@ wire sys_clk, div_clk, i2c_clk;
 wire rst;
 wire rv0_valid, rv0_valid_pulse, rv0_ready;
 wire [6:0] rv0_slave_address;
-wire [7:0] rv0_reg_address;
-wire [1:0] rv0_burst_count;
+wire [1:0] rv0_burst_count_wr;
+wire [1:0] rv0_burst_count_rd;
 wire rv0_rd_wrn;
 wire [3:0] [7:0] rv0_wdata;
 wire rv1_valid, rv1_ready;
@@ -142,8 +142,8 @@ uart_i2c_user_clock #(
     .o_mem_rv0_valid_pulse(rv0_valid_pulse),
     .i_mem_rv0_ready(rv0_ready),
     .o_mem_rv0_slave_address(rv0_slave_address),
-    .o_mem_rv0_reg_address(rv0_reg_address),
-    .o_mem_rv0_burst_count(rv0_burst_count),
+    .o_mem_rv0_burst_count_wr(rv0_burst_count_wr),
+    .o_mem_rv0_burst_count_rd(rv0_burst_count_rd),
     .o_mem_rv0_wdata0(rv0_wdata[0]),
     .o_mem_rv0_wdata1(rv0_wdata[1]),
     .o_mem_rv0_wdata2(rv0_wdata[2]),
@@ -188,9 +188,9 @@ i2c_master i2c_master_inst (
     .i_rv0_valid(rv0_valid),
     .o_rv0_ready(rv0_ready),
     .i_rv0_slave_address(rv0_slave_address),
-    .i_rv0_reg_address(rv0_reg_address),
     .i_rv0_wdata(rv0_wdata),
-    .i_rv0_burst_count(rv0_burst_count),
+    .i_rv0_burst_count_wr(rv0_burst_count_wr),
+    .i_rv0_burst_count_rd(rv0_burst_count_rd),
     .i_rv0_rd_wrn(rv0_rd_wrn),
     .o_rv1_valid(rv1_valid),
     .i_rv1_ready(rv1_ready),
