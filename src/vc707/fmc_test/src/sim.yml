@@ -1,0 +1,19 @@
+# Top level tb
+simulate.testbench: "top"
+
+# Files
+simulate.include_dirs: []
+simulate.defines: []
+simulate.packages: []
+simulate.rtl:
+- "src/fmc_test.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/scan/scan_clk_gen.v"
+simulate.test:
+- "test/top.v"
+- "/tools/Xilinx/Vivado/2020.2/data/verilog/src/unisims/IBUFDS.v"
+- "/tools/Xilinx/Vivado/2020.2/data/verilog/src/retarget/IBUFGDS.v"
+
+# Options
+simulate.include_uvm: true 
+simulate.verilog_version: "sv"
+simulate.options: []

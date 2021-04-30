@@ -1,0 +1,101 @@
+# Set target part for vivado (using vc707 evaluation board)
+implement.part: "xc7vx485tffg1761-2"
+implement.execute: true 
+
+# Set the units for all variable
+implement.units.time: "ns"
+implement.units.capacitance: "pF"
+implement.units.current: "mA"
+implement.units.voltage: "V"
+implement.units.power: "mW"
+implement.units.resistance: "ohm"
+implement.units.altitude: "meters"
+
+# Set top level module
+implement.top: "fmc_test"
+
+# Files
+implement.verilog:
+- "src/fmc_test.v"
+- "${internal.env.TOOLBOX_XILINX_EXAMPLES_HOME}/verilog-library/src/scan/scan_clk_gen.v"
+implement.vhdl: []
+implement.xdc: []
+#- "src/clocks.xdc"
+#- "src/pblocks.xdc"
+#- "src/pins.xdc"
+
+implement.config:
+  mode: "B_SCAN"
+  bank_voltage_select: "GND"
+  voltage: 1.8 
+
+implement.primary_clocks:
+- name: "i_sys_clk_p"
+  object: "i_sys_clk_p"
+  type: "port"
+  period: 5.0 
+- name: "i_sys_clk_n"
+  object: "i_sys_clk_n"
+  type: "port"
+  period: 5.0 
+
+implement.generated_clocks:
+- name: "clk"
+  object: "IBUFGDS_inst/O"
+  type: "pin"
+  source: "i_sys_clk_p"
+  source_type: "port"
+  divisor: 1
+- name: "fmc_clk_p"
+  object: "sclk_gen_inst/o_scan_clk_p"
+  type: "pin"
+  source: "IBUFGDS_inst/O"
+  source_type: "pin"
+  edges: [1, 3, 9] # Pos edge is 1, neg edge is 2
+  edge_shift: [0, 0, 0] # In ns
+- name: "fmc_clk_n"
+  object: "sclk_gen_inst/o_scan_clk_n"
+  type: "pin"
+  source: "IBUFGDS_inst/O"
+  source_type: "pin"
+  edges: [1, 3, 9] # Pos edge is 1, neg edge is 2
+  edge_shift: [10.0, 10.0, 10.0] # In ns (50 MHz clock)
+
+fmc_slew: "SLOW"
+fmc_drive: 16 
+
+implement.ports:
+- name: "i_sys_clk_p"
+  package_pin: "E19" # SYSCLK_P
+  iostandard: "LVDS"
+- name: "i_sys_clk_n"
+  package_pin: "E18" # SYSCLK_N
+  iostandard: "LVDS"
+- name: "i_rst"
+  package_pin: "AV39" # GPIO_SW_C 
+  iostandard: "LVCMOS18"
+- name: "o_fmc_clk_p"
+  #package_pin: "K39" # FMC G6 - Debug J1 1
+  package_pin: "V29" # FMC H37 
+  iostandard: "LVCMOS18"
+  #- name: "o_fmc_clk_n"
+  #  package_pin: "K40" # FMC G7
+  #  package_pin: "U29" # FMC H38 
+  #  iostandard: "LVCMOS18"
+- name: "o_fmc_gnd[0]"
+  package_pin: "N38" # FMC C14 - Debug J1 2 
+  iostandard: "LVCMOS18"
+- name: "o_fmc_gnd[1]"
+  package_pin: "K40" # G7 - Debug J1 3
+  iostandard: "LVCMOS18"
+- name: "o_fmc_gnd[2]"
+  package_pin: "M39" # C15 - Debug J1 4 
+  iostandard: "LVCMOS18"
+
+upload.bitstream: "build/implement/current/fmc_test.bit"
+upload.hw_server.hostname: "localhost"
+upload.hw_server.port: 3121
+#upload.target: "*xilinx_tcf/Digilent/210203A03554A" 
+upload.target: "*xilinx_tcf/Digilent/210203A023BEA"
+upload.execute: true
+upload.query_targets: false 
