@@ -155,7 +155,8 @@ uart_i2c_user_clock #(
     .i_mem_rv1_rdata0(rv1_rdata[0]),
     .i_mem_rv1_rdata1(rv1_rdata[1]),
     .i_mem_rv1_rdata2(rv1_rdata[2]),
-    .i_mem_rv1_rdata3(rv1_rdata[3])
+    .i_mem_rv1_rdata3(rv1_rdata[3]),
+    .o_mem_i2c_rst_n(o_i2c_rst_n)
 );
 
 // Clock divider (DIVIDE BY 40) => 

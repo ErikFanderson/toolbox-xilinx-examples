@@ -13,8 +13,8 @@ from abc import ABC, abstractmethod
 
 # Imports - local source
 from UARTDriver import *
-from uart_to_i2c import *
-from si570 import *
+from equipment.uart_to_i2c import *
+from equipment.si570 import *
 
 def led_test():
     """LED test to make sure that the UART is functioning"""
@@ -58,13 +58,14 @@ if __name__ == '__main__':
     print("# FINISH INIT MEMORY #")
 
     # Create Si570 object
+    led_test()
     clock = Si570_VC707(drv, 114284672.05569899)
     clock.configure_i2c_mux(0)
     
     # Default (156.25 MHz)
-    #if clock.set_output_frequency_raw(4, 8, 43.750398982316256):
-    #    print(clock.get_string_config())
-    #time.sleep(1)
+    if clock.set_output_frequency_raw(4, 8, 43.750398982316256):
+        print(clock.get_string_config())
+    time.sleep(1)
     #
     ## (160 MHz)
     #if clock.set_output_frequency_raw(4, 8, 44.80040855789185):
@@ -80,7 +81,7 @@ if __name__ == '__main__':
     #if clock.set_output_frequency_raw(4, 4, 43.750398982316256):
     #    print(clock.get_string_config())
   
-    print(clock.calc_rfreq_frequency_limits())
-    print(clock.calc_rfreq_for_frequency(160e6))
+    #print(clock.calc_rfreq_frequency_limits())
+    #print(clock.calc_rfreq_for_frequency(160e6))
     
     drv.close()

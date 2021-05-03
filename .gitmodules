@@ -10,3 +10,6 @@
 [submodule "verilog-library"]
 	path = verilog-library
 	url = git@github.com:ErikFanderson/verilog-library.git
+[submodule "equipment"]
+	path = equipment
+	url = git@bwrcrepo.eecs.berkeley.edu:isg/testing/equipment.git

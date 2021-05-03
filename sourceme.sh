@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-# Source toolbox sourceme
+# Source sourcemes
 cd toolbox; source sourceme.sh; cd ..
-
-# Source toolbox-xilinx-tools sourceme
 cd toolbox-xilinx-tools; source sourceme.sh; cd ..
+cd equipment; source sourceme.sh; cd ..
 
 # Set SSP1_FPGA_HOME variable
 export TOOLBOX_XILINX_EXAMPLES_HOME=$PWD
