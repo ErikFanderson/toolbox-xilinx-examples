@@ -42,10 +42,12 @@ if __name__ == '__main__':
     # Initialize UART mem to 0
     print("# BEGIN INIT MEMORY #")
     drv.write_register("RESET", "reset", "1")
+    drv.write_register("RESET", "i2c_rst_n", "0")
     print(f"Field: Reset, Reg: reset, Read: {drv.read_register('RESET', 'reset')}")
+    print(f"Field: Reset, Reg: i2c_rst_n, Read: {drv.read_register('RESET', 'i2c_rst_n')}")
     for field_name, field in drv._fields.items():
         for reg_name, reg in field["registers"].items():
-            if field_name != "RESET" or reg_name != "reset":
+            if field_name != "RESET":
                 if reg["write"]:
                     drv.write_register(field_name, reg_name, "0")
                     rdata = drv.read_register(field_name, reg_name)
@@ -54,11 +56,28 @@ if __name__ == '__main__':
                     rdata = drv.read_register(field_name, reg_name)
                     print(f"Field: {field_name}, Reg: {reg_name}, Read: {rdata}")
     drv.write_register("RESET", "reset", "0")
+    drv.write_register("RESET", "i2c_rst_n", "1")
     print(f"Field: Reset, Reg: reset, Read: {drv.read_register('RESET', 'reset')}")
+    print(f"Field: Reset, Reg: i2c_rst_n, Read: {drv.read_register('RESET', 'i2c_rst_n')}")
     print("# FINISH INIT MEMORY #")
 
+    # UART LED TEST
+    #led_test()
+    
+    # I2C TEST - Si570 Clock
+    #print("Si570 I2C Test")
+    #for pos in range(8):
+    #    print(pos)
+    #    drv.i2c_write(0x74, 1 << pos)
+    #    print(drv.i2c_read(0x74, 1 << pos))
+    #    print(drv.i2c_read(0b1011101, 7))
+    
+    # I2C TEST - Si5324 Clock
+    #print("Si570 I2C Test")
+    #print(drv.i2c_read(0x74, 1 << 7))
+    #print(drv.i2c_read(0b1101000, 0))
+    
     # Create Si570 object
-    led_test()
     clock = Si570_VC707(drv, 114284672.05569899)
     clock.configure_i2c_mux(0)
     
