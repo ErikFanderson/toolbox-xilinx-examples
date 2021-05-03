@@ -111,9 +111,6 @@ IOBUF #(
     .T(scl_oe_n) // 3-state enable input, high=input, low=output
 );
 
-// Pull i2c bus mux out of reset
-assign o_i2c_rst_n = 1'b1;
-
 // Clock divider (DIVIDE BY 20)
 flex_clk_div #(
     .CntWidth(5)

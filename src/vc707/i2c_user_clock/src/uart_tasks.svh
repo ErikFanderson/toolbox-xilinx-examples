@@ -77,6 +77,27 @@ task write_FIELD_RESET_REG_reset(input [999:0] data);
         end 
     end 
 endtask
+
+// Register: i2c_rst_n
+task read_FIELD_RESET_REG_i2c_rst_n(output [999:0] data);
+    logic [999:0] rdata;
+    begin
+        read_all_bytes(1, 1, rdata);
+        data = {{999{1'b0}}, rdata[1:1]};
+    end
+endtask
+
+task write_FIELD_RESET_REG_i2c_rst_n(input [999:0] data);
+    logic [999:0] rdata, wdata;
+    begin
+        read_all_bytes(1, 1, rdata);
+        wdata = rdata;
+        wdata[1:1] = data;
+        for (i = 0; i <= 0; i = i + 1) begin
+            write(1 + i, wdata[8*i +: 8]);
+        end 
+    end 
+endtask
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
