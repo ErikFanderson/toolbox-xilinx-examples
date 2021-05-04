@@ -15,12 +15,13 @@ from time import sleep
 
 # Imports - local source
 from UARTDriver import *
+from equipment.si570 import *
 
 class Si570_VC707_UART(Si570_VC707):
     
     def __init__(self, xtal_frequency, drv_uart):
-        super(Si570_VC707_UART, self).__init__(xtal_frequency)
         self._drv = drv_uart
+        super(Si570_VC707_UART, self).__init__(xtal_frequency)
 
     def toggle_rv0_valid_pulse(self):
         valid_pulse = self._drv.read_register("I2C", "rv0_valid_pulse")

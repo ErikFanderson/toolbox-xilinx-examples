@@ -13,7 +13,6 @@ from abc import ABC, abstractmethod
 
 # Imports - local source
 from UARTDriver import *
-#from equipment.uart_to_i2c import *
 from equipment.si570 import *
 from si570_vc707_uart import *
 
@@ -30,7 +29,7 @@ def led_test():
     print("# FINISH LED TEST #")
 
 if __name__ == '__main__':
-    drv = I2CUARTDriver(
+    drv = UARTDriver(
         port="/dev/ttyUSB0",
         baudrate=9600,
         timeout=1,
@@ -86,7 +85,7 @@ if __name__ == '__main__':
     if clock.set_output_frequency_raw(4, 8, 43.750398982316256):
         print(clock.get_string_config())
     time.sleep(1)
-    #
+    
     ## (160 MHz)
     #if clock.set_output_frequency_raw(4, 8, 44.80040855789185):
     #    print(clock.get_string_config())
