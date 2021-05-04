@@ -13,8 +13,9 @@ from abc import ABC, abstractmethod
 
 # Imports - local source
 from UARTDriver import *
-from equipment.uart_to_i2c import *
+#from equipment.uart_to_i2c import *
 from equipment.si570 import *
+from si570_vc707_uart import *
 
 def led_test():
     """LED test to make sure that the UART is functioning"""
@@ -78,7 +79,7 @@ if __name__ == '__main__':
     #print(drv.i2c_read(0b1101000, 0))
     
     # Create Si570 object
-    clock = Si570_VC707(drv, 114284672.05569899)
+    clock = Si570_VC707_UART(114284672.05569899, drv)
     clock.configure_i2c_mux(0)
     
     # Default (156.25 MHz)
